@@ -131,7 +131,7 @@ Nodo *buscar(Nodo *raiz, char cpf[]) {
 void listar(Nodo *raiz) {
     if (raiz != NULL) {
         listar(raiz->esquerda);
-        printf("CPF: %s | Nome: %s | Nascimento: %s | Endereço: %s | Telefone: %s\n",
+        printf("  |     CPF: %s\n  |        Nome: %s\n  |        Nascimento: %s\n  |        Endereço: %s\n  |        Telefone: %s\n  |\n",
                raiz->cpf, raiz->nome, raiz->nascimento, raiz->endereco, raiz->telefone);
         listar(raiz->direita);
     }
@@ -156,9 +156,9 @@ void atualizar(Nodo *raiz, char cpf[], char nome[], char nascimento[], char ende
         if (strlen(nascimento) > 0) strcpy(registro->nascimento, nascimento);
         if (strlen(endereco) > 0) strcpy(registro->endereco, endereco);
         if (strlen(telefone) > 0) strcpy(registro->telefone, telefone);
-        printf("Registro atualizado com sucesso!\n");
+        printf("  |     Registro atualizado com sucesso!\n");
     } else {
-        printf("CPF não encontrado!\n");
+        printf("  |     CPF não encontrado!\n");
     }
 }
 
@@ -219,7 +219,7 @@ Nodo *remover(Nodo *raiz, char cpf[]) {
 void exportar_dados(Nodo *raiz, FILE *arquivo) {
     if (raiz != NULL) {
         exportar_dados(raiz->esquerda, arquivo);
-        fprintf(arquivo, "CPF: %s | Nome: %s | Nascimento: %s | Endereço: %s | Telefone: %s\n",
+        fprintf(arquivo, "CPF: %s |   Nome: %s |  Nascimento: %s |  Endereço: %s |  Telefone: %s\n",
                 raiz->cpf, raiz->nome, raiz->nascimento, raiz->endereco, raiz->telefone);
         exportar_dados(raiz->direita, arquivo);
     }
@@ -234,98 +234,124 @@ int main() {
     char cpf[MAX_CPF], nome[MAX_NOME], nascimento[11], endereco[MAX_ENDERECO], telefone[MAX_TELEFONE];
     
     do {
-        printf("\nMenu de Operações:\n");
-        printf("1. Inserir Registro\n");
-        printf("2. Buscar Registro\n");
-        printf("3. Atualizar Registro\n");
-        printf("4. Remover Registro\n");
-        printf("5. Listar Todos os Registros\n");
-        printf("6. Exportar Dados para Arquivo\n");
-        printf("7. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("\n  ===========================================\n");
+        printf("  |            Menu de Operações:         |\n");
+        printf("  ===========================================\n");
+        printf("  |         1. Inserir Registro             |\n");
+        printf("  |         2. Buscar Registro              |\n");
+        printf("  |         3. Atualizar Registro           |\n");
+        printf("  |         4. Remover Registro             |\n");
+        printf("  |         5. Listar Todos os Registros    |\n");
+        printf("  |         6. Exportar Dados para Arquivo  |\n");
+        printf("  |         7. Sair                         |\n");
+        printf("  ===========================================\n");
+        printf("  |         Escolha uma opção: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                printf("\nDigite o CPF: ");
+                printf("\n  ===========================================\n");
+                printf("  |                  Inserir:               |\n");
+                printf("  ===========================================\n");
+                printf("\n  |         Digite o CPF: ");
                 scanf("%s", cpf);
                 if (!validar_cpf(cpf)) {
-                    printf("CPF inválido! Deve ter 11 dígitos numéricos.\n");
+                    printf("  |  CPF inválido! Deve ter 11 dígitos numéricos.\n");
                     break;
                 }
-                printf("Digite o nome: ");
+                printf("  |            Digite o nome: ");
                 getchar(); // Limpar o buffer de linha anterior
                 fgets(nome, MAX_NOME, stdin);
                 nome[strcspn(nome, "\n")] = '\0'; // Remover o \n extra do fgets
-                printf("Digite a data de nascimento (DD/MM/AAAA): ");
+                printf("  |    Digite a data de nascimento (DD/MM/AAAA): ");
                 scanf("%s", nascimento);
-                printf("Digite o endereço: ");
+                printf("  |    Digite o endereço: ");
                 getchar();
                 fgets(endereco, MAX_ENDERECO, stdin);
                 endereco[strcspn(endereco, "\n")] = '\0';
-                printf("Digite o telefone: ");
+                printf("  |    Digite o telefone: ");
                 scanf("%s", telefone);
                 
                 arvore.raiz = inserir(arvore.raiz, cpf, nome, nascimento, endereco, telefone);
                 break;
             case 2:
-                printf("\nDigite o CPF para buscar: ");
+                printf("\n  ===========================================\n");
+                printf("  |                  Buscar:               |\n");
+                printf("  ===========================================\n");
+                printf("\n  |   Digite o CPF para buscar: ");
                 scanf("%s", cpf);
                 Nodo *registro = buscar(arvore.raiz, cpf);
                 if (registro != NULL) {
-                    printf("Registro encontrado:\n");
-                    printf("CPF: %s | Nome: %s | Nascimento: %s | Endereço: %s | Telefone: %s\n",
-                           registro->cpf, registro->nome, registro->nascimento, registro->endereco, registro->telefone);
+                     printf("  ===========================================\n");
+                    printf("  |           Registro encontrado:          |\n");
+                    printf("  |           CPF: %s\n  |           Nome: %s\n  |           Nascimento: %s\n  |           Endereço: %s\n  |           Telefone: %s       \n",registro->cpf, registro->nome, registro->nascimento, registro->endereco, registro->telefone);
+                    printf("  ===========================================\n");
+                    
                 } else {
-                    printf("Registro não encontrado.\n");
+                     printf("  ===========================================\n");
+                    printf("  |           Registro não encontrado.      |\n");
+                    printf("  ===========================================\n");
                 }
                 break;
             case 3:
-                printf("\nDigite o CPF para atualizar: ");
+                printf("\n  ===========================================\n");
+                printf("  |                  Editar:               |\n");
+                printf("  ===========================================\n");
+                printf("\n  |           Digite o CPF para atualizar: ");
                 scanf("%s", cpf);
-                printf("Digite o novo nome (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo nome (deixe em branco para não alterar): ");
                 getchar();
                 fgets(nome, MAX_NOME, stdin);
                 nome[strcspn(nome, "\n")] = '\0';
-                printf("Digite a nova data de nascimento (deixe em branco para não alterar): ");
+                printf("  |     Digite a nova data de nascimento (deixe em branco para não alterar): ");
                 fgets(nascimento, 11, stdin);
                 nascimento[strcspn(nascimento, "\n")] = '\0';
-                printf("Digite o novo endereço (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo endereço (deixe em branco para não alterar): ");
                 fgets(endereco, MAX_ENDERECO, stdin);
                 endereco[strcspn(endereco, "\n")] = '\0';
-                printf("Digite o novo telefone (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo telefone (deixe em branco para não alterar): ");
                 fgets(telefone, MAX_TELEFONE, stdin);
                 telefone[strcspn(telefone, "\n")] = '\0';
-                
+                                
                 atualizar(arvore.raiz, cpf, nome, nascimento, endereco, telefone);
                 break;
             case 4:
-                printf("\nDigite o CPF para remover: ");
+                printf("\n  ===========================================\n");
+                printf("  |                  Remover:               |\n");
+                printf("  ===========================================\n");
+                printf("\n  |     Digite o CPF para remover: ");
                 scanf("%s", cpf);
                 arvore.raiz = remover(arvore.raiz, cpf);
-                printf("Registro removido (se encontrado).\n");
+                 printf("\n  ===========================================\n");
+                printf("  |          Registro removido              |\n");
+                printf("  ===========================================\n");
                 break;
             case 5:
-                printf("\nListando todos os registros:\n");
+            printf("\n  ===========================================\n");
+                printf("  |          Listar:                        |\n");
+                printf("  ===========================================\n");
+                
                 listar(arvore.raiz);
                 break;
             case 6:
                 {
                     FILE *arquivo = fopen("dados.txt", "w");
                     if (arquivo == NULL) {
-                        printf("Erro ao abrir o arquivo!\n");
+                        printf("  |     Erro ao abrir o arquivo!\n");
                         break;
                     }
                     exportar_dados(arvore.raiz, arquivo);
                     fclose(arquivo);
-                    printf("Dados exportados para dados.txt\n");
+                    printf("  |     Dados exportados para dados.txt\n");
                 }
                 break;
             case 7:
-                printf("Saindo do sistema...\n");
+                printf("  ===========================================\n");
+                printf("  |     Saindo do sistema..\n");
+                printf("  ===========================================\n");
                 break;
             default:
-                printf("Opção inválida!\n");
+                printf("  |     Opção inválida!\n");
                 break;
         }
     } while (opcao != 7);
