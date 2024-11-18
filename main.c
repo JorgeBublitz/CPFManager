@@ -8,7 +8,7 @@
 #define MAX_TELEFONE 15
 #define MAX_CPF 12
 
-// Definindo a estrutura do nó da árvore AVL
+// Definindo a estrutura do No da Arvore AVL
 typedef struct Nodo {
     char cpf[MAX_CPF];
     char nome[MAX_NOME];
@@ -24,7 +24,7 @@ typedef struct {
     Nodo *raiz;
 } ArvoreAVL;
 
-// Função para calcular a altura de um nó
+// Func�o para calcular a altura de um No
 int altura(Nodo *nodo) {
     if (nodo == NULL) {
         return 0;
@@ -32,7 +32,7 @@ int altura(Nodo *nodo) {
     return nodo->altura;
 }
 
-// Função para calcular o fator de balanceamento de um nó
+// Fun��o para calcular o fator de balanceamento de um No
 int fator_balanceamento(Nodo *nodo) {
     if (nodo == NULL) {
         return 0;
@@ -40,7 +40,7 @@ int fator_balanceamento(Nodo *nodo) {
     return altura(nodo->esquerda) - altura(nodo->direita);
 }
 
-// Função para realizar a rotação à direita
+// Fun��o para realizar a rota��o a�direita
 Nodo *rotacao_direita(Nodo *y) {
     Nodo *x = y->esquerda;
     Nodo *T2 = x->direita;
@@ -54,7 +54,7 @@ Nodo *rotacao_direita(Nodo *y) {
     return x;
 }
 
-// Função para realizar a rotação à esquerda
+// Fun��o para realizar a rota��o a esquerda
 Nodo *rotacao_esquerda(Nodo *x) {
     Nodo *y = x->direita;
     Nodo *T2 = y->esquerda;
@@ -68,7 +68,7 @@ Nodo *rotacao_esquerda(Nodo *x) {
     return y;
 }
 
-// Função para inserir um novo nó na árvore AVL
+// Fun��o para inserir um novo No na Arvore AVL
 Nodo *inserir(Nodo *raiz, char cpf[], char nome[], char nascimento[], char endereco[], char telefone[]) {
     if (raiz == NULL) {
         Nodo *novo_nodo = (Nodo *)malloc(sizeof(Nodo));
@@ -88,7 +88,7 @@ Nodo *inserir(Nodo *raiz, char cpf[], char nome[], char nascimento[], char ender
     } else if (strcmp(cpf, raiz->cpf) > 0) {
         raiz->direita = inserir(raiz->direita, cpf, nome, nascimento, endereco, telefone);
     } else {
-        return raiz; // CPF já existe, não insere
+        return raiz; // CPF ja existe, nao insere
     }
 
     raiz->altura = 1 + (altura(raiz->esquerda) > altura(raiz->direita) ? altura(raiz->esquerda) : altura(raiz->direita));
@@ -116,7 +116,7 @@ Nodo *inserir(Nodo *raiz, char cpf[], char nome[], char nascimento[], char ender
     return raiz;
 }
 
-// Função para procurar um CPF na árvore
+// Fun��o para procurar um CPF na Arvore
 Nodo *buscar(Nodo *raiz, char cpf[]) {
     if (raiz == NULL || strcmp(raiz->cpf, cpf) == 0) {
         return raiz;
@@ -127,20 +127,21 @@ Nodo *buscar(Nodo *raiz, char cpf[]) {
     return buscar(raiz->direita, cpf);
 }
 
-// Função para exibir todos os registros em ordem
+// Fun��o para exibir todos os registros em ordem
 void listar(Nodo *raiz) {
     if (raiz != NULL) {
         listar(raiz->esquerda);
-        printf("  |     CPF: %s\n  |        Nome: %s\n  |        Nascimento: %s\n  |        Endereço: %s\n  |        Telefone: %s\n  |\n",
+        printf("  |     CPF: %s\n  |        Nome: %s\n  |        Nascimento: %s\n  |        Endereco: %s\n  |        Telefone: %s\n  |\n",
                raiz->cpf, raiz->nome, raiz->nascimento, raiz->endereco, raiz->telefone);
         listar(raiz->direita);
     }
 }
 
-// Função para validar o CPF (apenas checando o formato e se possui 11 dígitos)
+// Fun��o para validar o CPF (apenas checando o formato e se possui 11 digitos)
 int validar_cpf(char cpf[]) {
-    if (strlen(cpf) != 11) return 0;
-    for (int i = 0; i < 11; i++) {
+    int i;
+	if (strlen(cpf) != 11) return 0;
+    for (i = 0; i < 11; i++) {
         if (!isdigit(cpf[i])) {
             return 0;
         }
@@ -148,7 +149,7 @@ int validar_cpf(char cpf[]) {
     return 1;
 }
 
-// Função para atualizar um registro
+// Fun��o para atualizar um registro
 void atualizar(Nodo *raiz, char cpf[], char nome[], char nascimento[], char endereco[], char telefone[]) {
     Nodo *registro = buscar(raiz, cpf);
     if (registro != NULL) {
@@ -162,7 +163,7 @@ void atualizar(Nodo *raiz, char cpf[], char nome[], char nascimento[], char ende
     }
 }
 
-// Função para remover um registro da árvore
+// Fun��o para remover um registro da Arvore
 Nodo *remover(Nodo *raiz, char cpf[]) {
     if (raiz == NULL) return raiz;
     
@@ -215,17 +216,17 @@ Nodo *remover(Nodo *raiz, char cpf[]) {
     return raiz;
 }
 
-// Função para exportar os dados para um arquivo de texto
+// Fun��o para exportar os dados para um arquivo de texto
 void exportar_dados(Nodo *raiz, FILE *arquivo) {
     if (raiz != NULL) {
         exportar_dados(raiz->esquerda, arquivo);
-        fprintf(arquivo, "CPF: %s |   Nome: %s |  Nascimento: %s |  Endereço: %s |  Telefone: %s\n",
+        fprintf(arquivo, "CPF: %s |   Nome: %s |  Nascimento: %s |  Endereco: %s |  Telefone: %s\n",
                 raiz->cpf, raiz->nome, raiz->nascimento, raiz->endereco, raiz->telefone);
         exportar_dados(raiz->direita, arquivo);
     }
 }
 
-// Função principal que exibe o menu e executa as operações
+// Fun��o principal que exibe o menu e executa as operações
 int main() {
     ArvoreAVL arvore;
     arvore.raiz = NULL;
@@ -235,7 +236,7 @@ int main() {
     
     do {
         printf("\n  ===========================================\n");
-        printf("  |            Menu de Operações:         |\n");
+        printf("  |            Menu de Operacoes:           |\n");
         printf("  ===========================================\n");
         printf("  |         1. Inserir Registro             |\n");
         printf("  |         2. Buscar Registro              |\n");
@@ -245,7 +246,7 @@ int main() {
         printf("  |         6. Exportar Dados para Arquivo  |\n");
         printf("  |         7. Sair                         |\n");
         printf("  ===========================================\n");
-        printf("  |         Escolha uma opção: ");
+        printf("  |         Escolha uma Opcao:              |");
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -256,7 +257,7 @@ int main() {
                 printf("\n  |         Digite o CPF: ");
                 scanf("%s", cpf);
                 if (!validar_cpf(cpf)) {
-                    printf("  |  CPF inválido! Deve ter 11 dígitos numéricos.\n");
+                    printf("  |  CPF invalido! Deve ter 11 digitos numericos.\n");
                     break;
                 }
                 printf("  |            Digite o nome: ");
@@ -265,7 +266,7 @@ int main() {
                 nome[strcspn(nome, "\n")] = '\0'; // Remover o \n extra do fgets
                 printf("  |    Digite a data de nascimento (DD/MM/AAAA): ");
                 scanf("%s", nascimento);
-                printf("  |    Digite o endereço: ");
+                printf("  |    Digite o Endereco: ");
                 getchar();
                 fgets(endereco, MAX_ENDERECO, stdin);
                 endereco[strcspn(endereco, "\n")] = '\0';
@@ -284,32 +285,32 @@ int main() {
                 if (registro != NULL) {
                      printf("  ===========================================\n");
                     printf("  |           Registro encontrado:          |\n");
-                    printf("  |           CPF: %s\n  |           Nome: %s\n  |           Nascimento: %s\n  |           Endereço: %s\n  |           Telefone: %s       \n",registro->cpf, registro->nome, registro->nascimento, registro->endereco, registro->telefone);
+                    printf("  |           CPF: %s\n  |           Nome: %s\n  |           Nascimento: %s\n  |           Endereco: %s\n  |           Telefone: %s       \n",registro->cpf, registro->nome, registro->nascimento, registro->endereco, registro->telefone);
                     printf("  ===========================================\n");
                     
                 } else {
                      printf("  ===========================================\n");
-                    printf("  |           Registro não encontrado.      |\n");
+                    printf("  |           Registro nao encontrado.      |\n");
                     printf("  ===========================================\n");
                 }
                 break;
             case 3:
                 printf("\n  ===========================================\n");
-                printf("  |                  Editar:               |\n");
+                printf("  |                  Editar:                |\n");
                 printf("  ===========================================\n");
                 printf("\n  |           Digite o CPF para atualizar: ");
                 scanf("%s", cpf);
-                printf("  |     Digite o novo nome (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo nome (deixe em branco para nao alterar): ");
                 getchar();
                 fgets(nome, MAX_NOME, stdin);
                 nome[strcspn(nome, "\n")] = '\0';
-                printf("  |     Digite a nova data de nascimento (deixe em branco para não alterar): ");
+                printf("  |     Digite a nova data de nascimento (deixe em branco para nao alterar): ");
                 fgets(nascimento, 11, stdin);
                 nascimento[strcspn(nascimento, "\n")] = '\0';
-                printf("  |     Digite o novo endereço (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo Endereco (deixe em branco para nao alterar): ");
                 fgets(endereco, MAX_ENDERECO, stdin);
                 endereco[strcspn(endereco, "\n")] = '\0';
-                printf("  |     Digite o novo telefone (deixe em branco para não alterar): ");
+                printf("  |     Digite o novo telefone (deixe em branco para nao alterar): ");
                 fgets(telefone, MAX_TELEFONE, stdin);
                 telefone[strcspn(telefone, "\n")] = '\0';
                                 
@@ -322,12 +323,12 @@ int main() {
                 printf("\n  |     Digite o CPF para remover: ");
                 scanf("%s", cpf);
                 arvore.raiz = remover(arvore.raiz, cpf);
-                 printf("\n  ===========================================\n");
+                 printf("\n===========================================\n");
                 printf("  |          Registro removido              |\n");
                 printf("  ===========================================\n");
                 break;
             case 5:
-            printf("\n  ===========================================\n");
+                printf("\n  ===========================================\n");
                 printf("  |          Listar:                        |\n");
                 printf("  ===========================================\n");
                 
@@ -351,7 +352,7 @@ int main() {
                 printf("  ===========================================\n");
                 break;
             default:
-                printf("  |     Opção inválida!\n");
+                printf("  |     Opcao invalida!\n");
                 break;
         }
     } while (opcao != 7);
